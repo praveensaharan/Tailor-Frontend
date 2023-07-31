@@ -143,13 +143,17 @@ const App = () => {
         <Route
           path="/order"
           element={
-            <Order
-              authenticated={authenticated}
-              handleSignOut={handleSignOut}
-              useremail={useremail}
-              username={username}
-              userid={userid}
-            />
+            authenticated ? (
+              <Order
+                authenticated={authenticated}
+                handleSignOut={handleSignOut}
+                useremail={useremail}
+                username={username}
+                userid={userid}
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
         <Route
@@ -168,12 +172,16 @@ const App = () => {
         <Route
           path="/categories"
           element={
-            <Category
-              authenticated={authenticated}
-              handleSignOut={handleSignOut}
-              useremail={useremail}
-              username={username}
-            />
+            authenticated ? (
+              <Category
+                authenticated={authenticated}
+                handleSignOut={handleSignOut}
+                useremail={useremail}
+                username={username}
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
         <Route

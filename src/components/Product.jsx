@@ -175,7 +175,7 @@ import Comments from "./Comments";
 import Price from "./Price";
 import { useParams } from "react-router-dom";
 
-const Base_url = "http://localhost:5000";
+const Base_url = "https://bestfitbackend.onrender.com";
 
 const ProductSection = ({ username }) => {
   const [rating, setRating] = useState(0);

@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 
 import Log from "../assets/logo1.png";
 
-const Base_url = "http://localhost:5000";
+const Base_url = "https://bestfitbackend.onrender.com";
 
 function Signup() {
   // const history = useHistory();

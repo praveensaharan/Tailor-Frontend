@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import verfi from "../assets/check-mark.png";
 import star from "../assets/star.png";
 import { Link } from "react-router-dom";
-const Base_url = "http://localhost:5000";
+const Base_url = "https://bestfitbackend.onrender.com";
 
 const Section = () => {
   const [dummyData, setDummyData] = useState([]);

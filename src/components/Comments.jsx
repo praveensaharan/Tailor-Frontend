@@ -19,7 +19,7 @@
 
 import React, { useState, useEffect } from "react";
 
-const Base_url = "http://localhost:5000";
+const Base_url = "https://bestfitbackend.onrender.com";
 
 const Comments = ({ id }) => {
   const [commentsData, setCommentsData] = useState([]);

@@ -17,7 +17,7 @@ import Payment from "./Pages/Payment";
 import Successful from "./Pages/Successful";
 import Failed from "./Pages/Failed";
 
-const Base_url = "http://localhost:5000";
+const Base_url = "https://bestfitbackend.onrender.com";
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);

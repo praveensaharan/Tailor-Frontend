@@ -19,8 +19,6 @@ import Successful from "./Pages/Successful";
 import Failed from "./Pages/Failed";
 import Home from "./Pages/Home";
 
-const Base_url = "https://bestfitbackend.onrender.com";
-
 const App = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
 

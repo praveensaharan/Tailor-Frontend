@@ -4,10 +4,6 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [
-    require("@headlessui/tailwindcss"),
-
-    // Or with a custom prefix:
-    // require('@headlessui/tailwindcss')({ prefix: 'ui' })
-  ],
+  plugins: [require("@headlessui/tailwindcss")],
+  darkMode: "false",
 };

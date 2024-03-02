@@ -3,220 +3,65 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
+  Navigate, // Add Navigate import
 } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import Dashboard from "./Pages/Dashboard";
 import Signup from "./Pages/Signup";
 import Category from "./Pages/Categories";
 import ErrorPage from "./error";
-import Login from "./Pages/Login";
+// import Login from "./Pages/Login";
 import Tailor from "./Pages/Tailors";
 import Product from "./Pages/Product";
 import Order from "./Pages/Order";
 import Payment from "./Pages/Payment";
 import Successful from "./Pages/Successful";
 import Failed from "./Pages/Failed";
+import Home from "./Pages/Home";
 
 const Base_url = "https://bestfitbackend.onrender.com";
 
 const App = () => {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [useremail, setUseremail] = useState("");
-  const [username, setUsername] = useState("");
-  const [userid, setUserid] = useState("");
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
-  const authenticateUser = async (username, password) => {
-    try {
-      const response = await fetch(`${Base_url}/signin`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: username,
-          password: password,
-        }),
-      });
-
-      if (response.status === 200) {
-        const userData = await response.json();
-        // Get the response data
-        const { name, email, _id } = userData;
-        // Extract username and email from the data
-        setAuthenticated(true);
-        setUserid(_id);
-        setUsername(name); // Set the username state
-        setUseremail(email);
-
-        // Set the useremail state
-        return true;
-      } else {
-        const data = await response.json();
-        if (data && data.message) {
-          alert(data.message);
-        } else {
-          alert("Unknown error occurred. Please try again.");
-        }
-      }
-    } catch (error) {
-      alert(error.message || "An error occurred. Please try again later.");
-      console.error("Error signing in:", error);
-    }
-    return false;
-  };
-
-  const handleSignOut = () => {
-    setAuthenticated(false);
-    setUseremail("");
-    setUsername("");
-    setUserid("");
-  };
+  if (isLoading) {
+    // Handle loading state if necessary
+    return <div>Loading...</div>;
+  }
 
   return (
     <Router>
       <Routes>
         <Route
           path="/"
-          element={
-            authenticated ? (
-              <Dashboard
-                authenticated={authenticated}
-                handleSignOut={handleSignOut}
-                useremail={useremail}
-                username={username}
-              />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
         />
 
         <Route
           path="/dashboard"
-          element={
-            authenticated ? (
-              <Dashboard
-                authenticated={authenticated}
-                handleSignOut={handleSignOut}
-                useremail={useremail}
-                username={username}
-              />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
         />
 
         <Route
           path="/login"
-          element={
-            authenticated ? (
-              <Navigate to="/dashboard" />
-            ) : (
-              <Login authenticateUser={authenticateUser} />
-            )
-          }
+          element={isAuthenticated ? <Navigate to="/dashboard" /> : <Home />}
         />
         <Route path="/signup" element={<Signup />} />
-        <Route
-          path="/tailors"
-          element={
-            <Tailor
-              authenticated={authenticated}
-              handleSignOut={handleSignOut}
-              useremail={useremail}
-              username={username}
-            />
-          }
-        />
-        <Route
-          path="/tailors/:id"
-          element={
-            <Product
-              authenticated={authenticated}
-              handleSignOut={handleSignOut}
-              useremail={useremail}
-              username={username}
-            />
-          }
-        />
+        <Route path="/tailors" element={<Tailor />} />
+        <Route path="/tailors/:id" element={<Product />} />
         <Route
           path="/order"
-          element={
-            authenticated ? (
-              <Order
-                authenticated={authenticated}
-                handleSignOut={handleSignOut}
-                useremail={useremail}
-                username={username}
-                userid={userid}
-              />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={isAuthenticated ? <Order /> : <Navigate to="/login" />}
         />
-        <Route
-          path="/payment"
-          element={
-            <Payment
-              authenticated={authenticated}
-              handleSignOut={handleSignOut}
-              useremail={useremail}
-              username={username}
-              userid={userid}
-            />
-          }
-        />
+        <Route path="/payment" element={<Payment />} />
 
         <Route
           path="/categories"
-          element={
-            authenticated ? (
-              <Category
-                authenticated={authenticated}
-                handleSignOut={handleSignOut}
-                useremail={useremail}
-                username={username}
-              />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={isAuthenticated ? <Category /> : <Navigate to="/login" />}
         />
-        <Route
-          path="/paymentSuccessful"
-          element={
-            <Successful
-              authenticated={authenticated}
-              handleSignOut={handleSignOut}
-              useremail={useremail}
-              username={username}
-            />
-          }
-        />
-        <Route
-          path="/paymentFailed"
-          element={
-            <Failed
-              authenticated={authenticated}
-              handleSignOut={handleSignOut}
-              useremail={useremail}
-              username={username}
-            />
-          }
-        />
-        <Route
-          path="*"
-          element={
-            <ErrorPage
-              authenticated={authenticated}
-              handleSignOut={handleSignOut}
-              useremail={useremail}
-              username={username}
-            />
-          }
-        />
+        <Route path="/paymentSuccessful" element={<Successful />} />
+        <Route path="/paymentFailed" element={<Failed />} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </Router>
   );

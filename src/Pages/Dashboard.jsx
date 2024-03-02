@@ -2,15 +2,10 @@ import React from "react";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 
-const Dashboard = ({ authenticated, handleSignOut, useremail, username }) => {
+const Dashboard = () => {
   return (
     <>
-      <Navbar
-        authenticated={authenticated}
-        handleSignOut={handleSignOut}
-        useremail={useremail}
-        username={username}
-      />
+      <Navbar />
       <Header />
     </>
   );

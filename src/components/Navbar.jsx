@@ -1,48 +1,44 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
+import React, { useState } from "react";
 import Log from "../assets/logo1.png";
-import Dropdown from "./Dropdown";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Link, useNavigate } from "react-router-dom";
 
-function Navbar({ authenticated, handleSignOut, useremail, username }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [imageUrlObject, setImageUrlObject] = useState(null); // New state variable to store the image URL
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const navigate = useNavigate();
+const Base_url = "https://bestfitbackend.onrender.com";
 
-  const handleSignOutClick = () => {
-    handleSignOut(); // Call the handleSignOut function passed as a prop
-    navigate("/login"); // Navigate to the login page after signing out
-  };
+function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const { user, isAuthenticated, isLoading, loginWithRedirect, logout } =
+    useAuth0();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        if (!user) return; // Check if user is null
+        const response = await fetch(`${Base_url}/user/${user.sub}`);
+
+        const responseData = await response.json(); // Parse JSON response
+        if (response.ok) {
+          setUserData(responseData);
+          console.log(responseData);
+        } else {
+          console.error("Failed to fetch user data:", responseData.error);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    if (isAuthenticated && user && !isLoading && !userData) {
+      fetchUserData();
+    }
+  }, [isAuthenticated, user, isLoading, userData]);
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-
-  const hexColors = [
-    "ff5733",
-    "3c91e6",
-    "33ff86",
-    "ffc233",
-    "be33ff",
-    "33ffe8",
-    "ff33ae",
-    "b333ff",
-    "33ffbe",
-    "e833ff",
-  ];
-
-  function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
-  const randomIndex = getRandomInt(0, hexColors.length - 1);
-  const randomHexColor = hexColors[randomIndex];
-
-  //avatar-g88m.onrender.com/generate-image?name=Praveen&color=3D85E6
-  const imageUrl1 = `http://avatar-g88m.onrender.com/generate-image?name=${username}&color=${randomHexColor}`;
-
-  useEffect(() => {
-    setImageUrlObject(imageUrl1);
-  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -63,78 +59,81 @@ function Navbar({ authenticated, handleSignOut, useremail, username }) {
         </Link>
 
         <div className="flex md:order-2">
-          {imageUrlObject && (
-            <div className="relative inline-block text-left">
-              <button
-                id="dropdownDefaultButton"
-                onClick={handleDropdownToggle}
-                className="text-white hover:bg-blue-200 font-medium rounded-full text-sm px-2 py-2 text-center inline-flex items-center dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                type="button"
+          <div className="relative inline-block text-left">
+            <button
+              id="dropdownDefaultButton"
+              onClick={handleDropdownToggle}
+              className="text-white hover:bg-blue-200 font-medium rounded-full text-sm px-2 py-2 text-center inline-flex items-center dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              type="button"
+            >
+              <img
+                src={user.picture}
+                alt={user.name}
+                className="w-10 h-10 rounded-full"
+              />
+            </button>
+            {isDropdownOpen && (
+              <div
+                id="dropdown"
+                className="z-10 absolute right-0 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
               >
-                {/* <img src={imageUrlObject} className="w-10 h-10" alt="" /> */}
-                <img
-                  src={imageUrl1}
-                  className="w-10 h-10 rounded-full"
-                  alt=""
-                />
-              </button>
-              {isDropdownOpen && (
-                <div
-                  id="dropdown"
-                  className="z-10 absolute right-0 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+                <ul
+                  className="py-2 bg-blue-100 text-sm text-gray-700 dark:text-gray-200"
+                  aria-labelledby="dropdownDefaultButton"
                 >
-                  <ul
-                    className="py-2 bg-blue-100 text-sm text-gray-700 dark:text-gray-200"
-                    aria-labelledby="dropdownDefaultButton"
-                  >
+                  <li>
+                    <Link
+                      to="/"
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                      {userData ? userData.username : user.nickname}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/"
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white overflow-hidden"
+                    >
+                      {userData ? userData.email : user.email}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/"
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                      Account Settings
+                    </Link>
+                  </li>
+                  {isAuthenticated ? (
+                    <li>
+                      <button
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        onClick={() =>
+                          logout({
+                            logoutParams: {
+                              returnTo: window.location.origin,
+                            },
+                          })
+                        }
+                      >
+                        Log Out
+                      </button>
+                    </li>
+                  ) : (
                     <li>
                       <Link
-                        to="/"
+                        to="/login"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
-                        {username}
+                        Sign In
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        to="/"
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white overflow-hidden"
-                      >
-                        {useremail}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to="/"
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        Account Settings
-                      </Link>
-                    </li>
-                    {authenticated ? (
-                      <li>
-                        <button
-                          onClick={handleSignOutClick}
-                          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Sign Out
-                        </button>
-                      </li>
-                    ) : (
-                      <li>
-                        <Link
-                          to="/login"
-                          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Sign In
-                        </Link>
-                      </li>
-                    )}
-                  </ul>
-                </div>
-              )}
-            </div>
-          )}
+                  )}
+                </ul>
+              </div>
+            )}
+          </div>
           <button
             onClick={toggleMenu}
             type="button"

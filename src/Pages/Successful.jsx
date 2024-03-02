@@ -2,15 +2,10 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import Form from "../components/PaymentSussful";
 
-const Succ = ({ authenticated, handleSignOut, useremail, username }) => {
+const Succ = () => {
   return (
     <>
-      <Navbar
-        authenticated={authenticated}
-        handleSignOut={handleSignOut}
-        useremail={useremail}
-        username={username}
-      />
+      <Navbar />
 
       <Form />
     </>

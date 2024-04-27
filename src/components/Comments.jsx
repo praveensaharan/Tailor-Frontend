@@ -1,25 +1,6 @@
-// import React, { useState } from "react";
-// const Base_url = "http://localhost:5000";
-
-// const commentsData = [
-//   {
-//     name: "John Doe",
-//     stars: 1,
-//     heading: "Excellent Product!",
-//     message: "This product exceeded my expectations. Highly recommended!",
-//   },
-//   {
-//     name: "Jane Smith",
-//     stars: 4,
-//     heading: "Good Value for Money",
-//     message: "I am happy with the purchase. The product is of good quality.",
-//   },
-//   // Add more feedback data as needed
-// ];
-
 import React, { useState, useEffect } from "react";
 
-const Base_url = "https://bestfitbackend.onrender.com";
+const Base_url = "https://tailorapp.azurewebsites.net";
 
 const Comments = ({ id }) => {
   const [commentsData, setCommentsData] = useState([]);

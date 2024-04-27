@@ -4,7 +4,7 @@ import Log from "../assets/logo1.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link, useNavigate } from "react-router-dom";
 
-const Base_url = "https://bestfitbackend.onrender.com";
+const Base_url = "https://tailorapp.azurewebsites.net";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

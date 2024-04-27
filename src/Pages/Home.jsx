@@ -10,7 +10,7 @@ import Tailor from "../components1/Tailor";
 import Header2 from "../components1/Header2";
 import Footer from "../components1/Footer";
 
-const port = "https://bestfitbackend.onrender.com";
+const port = "https://tailorapp.azurewebsites.net";
 const Home = () => {
   useEffect(() => {
     const fetchUserData = async () => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Base_url = "https://bestfitbackend.onrender.com";
+const Base_url = "https://tailorapp.azurewebsites.net";
 
 const Ordersum3 = ({ userid }) => {
   const [ordersData, setOrdersData] = useState([]);

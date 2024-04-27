@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Form from "../components/Product";
 import { useAuth0 } from "@auth0/auth0-react";
-const port = "https://bestfitbackend.onrender.com";
+const port = "https://tailorapp.azurewebsites.net";
 const Product2 = () => {
   const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
   const [userData, setUserData] = useState(null);

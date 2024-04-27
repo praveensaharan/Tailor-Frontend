@@ -5,7 +5,7 @@ import Form from "../components/Orders";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
-const port = "https://bestfitbackend.onrender.com";
+const port = "https://tailorapp.azurewebsites.net";
 
 const Orders = () => {
   const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();

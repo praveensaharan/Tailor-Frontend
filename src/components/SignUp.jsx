@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 
 import Log from "../assets/logo1.png";
 
-const Base_url = "https://bestfitbackend.onrender.com";
+const Base_url = "https://tailorapp.azurewebsites.net";
 
 function Signup() {
   // const history = useHistory();

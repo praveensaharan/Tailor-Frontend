@@ -9,7 +9,7 @@ import {
 import Card from "react-credit-cards";
 import "react-credit-cards/es/styles-compiled.css";
 import { useLocation } from "react-router-dom";
-const Base_url = "https://bestfitbackend.onrender.com";
+const Base_url = "https://tailorapp.azurewebsites.net";
 
 const App = ({ userid }) => {
   const [formData, setFormData] = useState({
